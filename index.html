@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环数字标记程序</title>
+    <style>
+        /* CSS 样式部分 */
+        body { display: flex; flex-direction: column; gap: 30px; justify-content: center; align-items: center; height: 100vh; }
+        .sequence { display: flex; gap: 10px; }
+        .button { padding: 10px 20px; background-color: #f0f0f0; border: 1px solid #ccc; cursor: pointer; }
+        .active { background-color: #ff4d4d; color: #fff; }
+        .highlight { background-color: #4d79ff; color: #fff; }
+    </style>
+</head>
+<body>
+    <!-- 左侧的循环数字序列 -->
+    <div id="cycle-sequence" class="sequence"></div>
+
+    <!-- 右侧的投注金额序列 -->
+    <div id="bet-sequence" class="sequence">
+        <div class="button">1</div>
+        <div class="button">3</div>
+        <div class="button">6</div>
+        <div class="button">13</div>
+        <div class="button">28</div>
+        <div class="button">60</div>
+        <div class="button">125</div>
+        <div class="button">260</div>
+    </div>
+
+    <!-- 重置按钮 -->
+    <button onclick="resetAll()">重置</button>
+
+    <script>
+        // JavaScript 逻辑部分
+
+        // 循环数字序列
+        const cycleNumbers = [1, 1, 0, 1, 1, 1, 1, 0];
+        const cycleContainer = document.getElementById('cycle-sequence');
+        let currentCycleIndex = 0;
+
+        // 生成循环数字按钮
+        function generateCycleButtons() {
+            cycleNumbers.forEach((num, index) => {
+                const button = document.createElement('div');
+                button.classList.add('button');
+                button.innerText = num;
+
+                // 点击事件：选中当前数字
+                button.addEventListener('click', () => {
+                    // 移除上一个选中的样式
+                    document.querySelectorAll('#cycle-sequence .button').forEach((btn, idx) => {
+                        if (idx === currentCycleIndex) btn.classList.remove('highlight');
+                    });
+
+                    // 更新当前索引并添加选中样式
+                    currentCycleIndex = index;
+                    button.classList.add('highlight');
+                });
+
+                cycleContainer.appendChild(button);
+            });
+        }
+
+        // 初始化生成循环数字按钮
+        generateCycleButtons();
+
+        // 右侧按钮点击事件
+        document.querySelectorAll('#bet-sequence .button').forEach(button => {
+            button.addEventListener('click', () => {
+                // 切换按钮的选中状态
+                button.classList.toggle('active');
+            });
+        });
+
+        // 重置所有按钮状态
+        function resetAll() {
+            // 重置循环数字状态
+            document.querySelectorAll('#cycle-sequence .button').forEach(button => {
+                button.classList.remove('highlight');
+            });
+            currentCycleIndex = 0;
+
+            // 重置投注按钮状态
+            document.querySelectorAll('#bet-sequence .button').forEach(button => {
+                button.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
+       
